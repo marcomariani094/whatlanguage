@@ -1,9 +1,9 @@
 require 'whatlanguage/bloominsimple'
 require 'whatlanguage/bitfield'
-require 'digest/sha1'
+require 'digest'
 
 class WhatLanguage
-  HASHER = lambda { |item| Digest::SHA1.digest(item.downcase.strip).unpack("VV".freeze) }
+  HASHER = lambda { |item| Digest::SHA256.digest(item.downcase.strip).unpack("VV".freeze) }
 
   BITFIELD_WIDTH = 2_000_000
 
@@ -35,12 +35,14 @@ class WhatLanguage
 
   def initialize(*selection)
     @selection = (selection.empty?) ? [:all] : selection
+
     if @@data.empty?
       languages_folder = File.join(File.dirname(__FILE__), "..", "lang")
       Dir.entries(languages_folder).grep(/\.lang/).each do |lang|
         @@data[lang[/\w+/].to_sym] ||= BloominSimple.from_dump(File.new(File.join(languages_folder, lang), 'rb').read, &HASHER)
       end
     end
+    
   end
 
   def languages
