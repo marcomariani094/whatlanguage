@@ -3,7 +3,7 @@ require 'whatlanguage/bitfield'
 require 'digest'
 
 class WhatLanguage
-  HASHER = lambda { |item| Digest::SHA256.digest(item.downcase.strip).unpack("VV".freeze) }
+  HASHER = lambda { |item| Digest::SHA256.digest(item.downcase.strip).unpack("V".freeze) }
 
   BITFIELD_WIDTH = 2_000_000
 
@@ -42,7 +42,7 @@ class WhatLanguage
         @@data[lang[/\w+/].to_sym] ||= BloominSimple.from_dump(File.new(File.join(languages_folder, lang), 'rb').read, &HASHER)
       end
     end
-    
+
   end
 
   def languages
