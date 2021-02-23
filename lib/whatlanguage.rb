@@ -3,7 +3,7 @@ require 'whatlanguage/bitfield'
 require 'digest'
 
 class WhatLanguage
-  HASHER = lambda { |item| Digest::SHA256.digest(item.downcase.strip).unpack("V".freeze) }
+  HASHER = lambda { |item| Digest::SHA512.digest(item.downcase.strip).unpack("VV".freeze) }
 
   BITFIELD_WIDTH = 2_000_000
 
